@@ -1,0 +1,30 @@
+{
+  "name": "pii-shield-ar",
+  "version": "1.0.0",
+  "description": "MCP server para anonimización de PII argentino — DNI, CUIL/CUIT, CBU, CVU, expedientes judiciales y más",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "pii-shield-ar": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "test": "tsx src/tests/patterns.test.ts"
+  },
+  "keywords": ["mcp", "pii", "privacy", "argentina", "gdpr", "compliance", "anonymization"],
+  "license": "MIT",
+  "author": "Fork argentino de PII Shield (gregmos) — adaptado por adrianlerer",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
