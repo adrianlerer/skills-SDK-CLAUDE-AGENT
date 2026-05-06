@@ -100,12 +100,12 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
 }));
 
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
-  const { name, arguments: args } = request.params;
+  const { name, arguments: args = {} } = request.params;
 
   try {
     switch (name) {
       case 'anonymize_text': {
-        const result = anonymize(args.text as string, args.session_id as string | undefined);
+        const result = anonymize((args as Record<string, string>).text, (args as Record<string, string>).session_id);
         return {
           content: [
             {
@@ -131,14 +131,15 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'deanonymize_text': {
-        const restored = deanonymize(args.text as string, args.session_id as string);
+        const a = args as Record<string, string>;
+        const restored = deanonymize(a.text, a.session_id);
         return {
           content: [{ type: 'text', text: JSON.stringify({ restored_text: restored }, null, 2) }],
         };
       }
 
       case 'scan_text': {
-        const entities = scan(args.text as string);
+        const entities = scan((args as Record<string, string>).text);
         return {
           content: [
             {
@@ -162,12 +163,13 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'get_session_mapping': {
-        const mapping = getMapping(args.session_id as string);
+        const sid0 = (args as Record<string, string>).session_id;
+        const mapping = getMapping(sid0);
         return {
           content: [
             {
               type: 'text',
-              text: JSON.stringify({ session_id: args.session_id, mapping }, null, 2),
+              text: JSON.stringify({ session_id: sid0, mapping }, null, 2),
             },
           ],
         };
@@ -181,7 +183,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'clear_session': {
-        const ok = clearSession(args.session_id as string);
+        const ok = clearSession((args as Record<string, string>).session_id);
         return {
           content: [
             {
